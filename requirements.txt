@@ -1,0 +1,9 @@
+Django>=3.2
+boto3>=1.4.4
+dropbox>=7.2.1
+azure-core>=1.13
+
+setuptools
+twine
+sdist
+wheel

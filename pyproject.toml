@@ -10,7 +10,7 @@ requires = [
 ]
 
 [project]
-name = "django-storages"
+name = "wdg-django-storages"
 description = "Support for many storage backends in Django"
 license = {text = "BSD-3-Clause"}
 authors = [{name = "Josh Schneier", email = "josh.schneier@gmail.com"}]

@@ -1,10 +1,10 @@
 import boto3
 from django.conf import settings
-from storages.backends.s3boto3 import S3Boto3Storage
+from storages.base import BaseStorage
 from botocore.exceptions import ClientError
 
 
-class PowerScaleS3Storage(S3Boto3Storage):
+class PowerScaleS3Storage(BaseStorage):
     """
     Dell PowerScale S3 Storage backend with pre-signed URL and multipart upload support.
     """
@@ -16,10 +16,10 @@ class PowerScaleS3Storage(S3Boto3Storage):
     def get_default_settings(cls):
         return {
             "bucket_name": getattr(settings, "POWERSCALE_BUCKET_NAME", None),
-            "access_key": getattr(settings, "POWERSCALE_ACCESS_KEY", None),
-            "secret_key": getattr(settings, "POWERSCALE_SECRET_KEY", None),
-            "endpoint_url": getattr(settings, "POWERSCALE_S3_ENDPOINT", None),
-            "region_name": getattr(settings, "POWERSCALE_REGION", None),
+            "access_key": getattr(settings, "POWERSCALE_ACCESS_KEY_ID", None),
+            "secret_key": getattr(settings, "POWERSCALE_SECRET_ACCESS_KEY", None),
+            "endpoint_url": getattr(settings, "POWERSCALE_ENDPOINT_URL", None),
+            "region_name": getattr(settings, "POWERSCALE_REGION_NAME", None),
         }
 
     def __init__(self, *args, **kwargs):
@@ -47,6 +47,7 @@ class PowerScaleS3Storage(S3Boto3Storage):
         )
         self.bucket_name = bucket_name  # Store as instance variable
 
+        
     # -------------------------
     # Pre-signed URL methods
     # -------------------------

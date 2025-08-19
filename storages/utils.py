@@ -153,6 +153,30 @@ def is_seekable(file_object):
     return not hasattr(file_object, "seekable") or file_object.seekable()
 
 
+def get_bucket(default_bucket=True):
+    """
+    Returns the bucket name based on the current tenant or the default bucket name.
+    """
+    if default_bucket is True:
+        return getattr(settings, "POWERSCALE_BUCKET_NAME", None)
+
+    return default_bucket or settings.POWERSCALE_BUCKET_NAME
+
+
+def add_slash(path):
+    """
+    Ensures a string ends with a '/'.
+
+    Args:
+        path (str): The input string.
+
+    Returns:
+        str: The string with a trailing '/'.
+    """
+
+    return path if path.endswith("/") else path + "/"
+
+
 class ReadBytesWrapper(FileProxyMixin):
     """
     A wrapper for a file-like object, that makes read() always returns bytes.

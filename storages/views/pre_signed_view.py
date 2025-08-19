@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from storages.backends.powerscale import PowerScaleS3Storage
-from storages.file_metadata.utils import unique_file_name_timestamp
+from ..utils import add_slash
 
 storage = PowerScaleS3Storage()
 
@@ -15,14 +15,22 @@ class PresignedUpload(APIView):
 
     def post(self, request):
         filename = request.data.get("filename")
+        content_type = request.data.get("content_type")
+        upload_path = request.data.get("upload_path")
+
         if not filename:
             return Response(
                 {"error": "Missing filename"}, status=status.HTTP_400_BAD_REQUEST
             )
         try:
-            url = storage.generate_presigned_upload_url(filename)
-            key = unique_file_name_timestamp(filename)
-            return Response({"key": key, "upload_url": url})
+            if upload_path:
+                filename = f"{add_slash(upload_path)}{filename}"
+                
+            url = storage.generate_presigned_upload_url(
+                key=filename, content_type=content_type
+            )
+
+            return Response({"key": filename, "upload_url": url})
         except Exception as e:
             return Response(
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR

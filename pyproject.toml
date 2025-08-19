@@ -72,6 +72,7 @@ zip-safe = false
 packages = [
     "storages",
     "storages.backends",
+    "storages.file_metadata",
 ]
 include-package-data = false
 
